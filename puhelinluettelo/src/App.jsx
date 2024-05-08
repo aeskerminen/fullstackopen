@@ -121,17 +121,18 @@ const App = () => {
         )
       ) {
         const cur = persons.find((p) => p.name === newName);
-        services.changeNumber(cur.id, cur, newNumber).catch(() => {
+        services.changeNumber(cur.id, cur, newNumber).then(() => {
+          setPersons(
+            persons.map((p) =>
+              (p.name !== cur.name) ? p : { ...cur, number: newNumber }
+            ),
+          );
+        }).catch((error) => {
           setErrorNotificationMsg(`Information of ${newName} has already been removed from the servers.`);
           setTimeout(() => {
             setErrorNotificationMsg(null);
           }, 5000);
         });
-        setPersons(
-          persons.map((p) =>
-            (p.name !== cur.name) ? p : { ...cur, number: newNumber }
-          ),
-        );
       }
     }
   };
