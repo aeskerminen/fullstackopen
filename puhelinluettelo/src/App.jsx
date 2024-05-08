@@ -108,6 +108,11 @@ const App = () => {
           setTimeout(() => {
             setAddNotificationMsg(null);
           }, 5000);
+        }).catch(error => {
+          setErrorNotificationMsg(error.response.data);
+          setTimeout(() => {
+            setErrorNotificationMsg(null);
+          }, 5000);
         });
     } else {
       if (
@@ -116,10 +121,7 @@ const App = () => {
         )
       ) {
         const cur = persons.find((p) => p.name === newName);
-        axios.put("http://localhost:9999/persons/" + cur.id, {
-          ...cur,
-          number: newNumber,
-        }).catch(() => {
+        services.changeNumber(cur.id, cur, newNumber).catch(() => {
           setErrorNotificationMsg(`Information of ${newName} has already been removed from the servers.`);
           setTimeout(() => {
             setErrorNotificationMsg(null);
